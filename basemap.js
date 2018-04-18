@@ -40,11 +40,13 @@ myMap.addLayer(myLayers.bmaporthofoto30cm);
 
 let myMapControl = L.control.layers({
     "Openstreetmap" : myLayers.osm,
-    "Basemap" : myLayers.geolandbasemap,
-    "basemap.at Overlay": myLayers.bmapoverlay,
+    "Basemap" : myLayers.geolandbasemap,    
     "basemap.at grau" : myLayers.bmapgrau,
     "basemap.at hidpi" : myLayers.bmaphidpi,
     "basemap.at Orthofoto" :  myLayers.bmaporthofoto30cm,
+},{
+    "basemap.at Overlay": myLayers.bmapoverlay,
+
 
 
 });
