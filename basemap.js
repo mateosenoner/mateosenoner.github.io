@@ -46,12 +46,14 @@ let myMapControl = L.control.layers({ //http://leafletjs.com/reference-1.3.0.htm
     "Basemap" : myLayers.geolandbasemap,    
     "basemap.at grau" : myLayers.bmapgrau,
     "basemap.at hidpi" : myLayers.bmaphidpi,
-    "basemap.at Orthofoto" :  myLayers.bmaporthofoto30cm,
+    "basemap.at Orthofoto" :  myLayers.bmaporthofoto30cm
 },{
-    "basemap.at Overlay": myLayers.bmapoverlay,
+    "basemap.at Overlay": myLayers.bmapoverlay
 
 
 
+},{
+	collapsed: false //http://leafletjs.com/reference-1.3.0.html#control-layers-collapsed
 });
 
 myMap.addControl(myMapControl); //http://leafletjs.com/reference-1.3.0.html#map-addcontrol
