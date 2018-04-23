@@ -39,7 +39,7 @@ let myLayers = {
 
 };
 
-myMap.addLayer(myLayers.bmaporthofoto30cm); //http://leafletjs.com/reference-1.3.0.html#layergroup-addlayer
+myMap.addLayer(myLayers.bmaporthofoto30cm); //http://leafletjs.com/reference-1.3.0.html#map-addlayer
 
 let myMapControl = L.control.layers({ //http://leafletjs.com/reference-1.3.0.html#control-layers
     "Openstreetmap" : myLayers.osm,
@@ -57,7 +57,7 @@ let myMapControl = L.control.layers({ //http://leafletjs.com/reference-1.3.0.htm
 });
 
 myMap.addControl(myMapControl); //http://leafletjs.com/reference-1.3.0.html#map-addcontrol
-myMap.setView([47.267,11.383], 11); //http://leafletjs.com/reference-1.3.0.html#locate-options-setview
+myMap.setView([47.267,11.383], 11); //http://leafletjs.com/reference-1.3.0.html#map-setview
 
 L.control.scale({ //http://leafletjs.com/reference-1.3.0.html#control-scale
 	position: "bottomleft", //http://leafletjs.com/reference-1.3.0.html#control-scale-position
