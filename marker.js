@@ -1,4 +1,6 @@
 let myMap = L.map("mapdiv"); //http://leafletjs.com/reference-1.3.0.html#map-l-map
+let markerGroup = L.featureGroup();
+myMap.addLayer(markerGroup);
 let myLayers = {
     osm : L.tileLayer( //hhttp://leafletjs.com/reference-1.3.0.html#tilelayer
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -39,7 +41,7 @@ let myLayers = {
 
 };
 
-myMap.addLayer(myLayers.bmaporthofoto30cm); //http://leafletjs.com/reference-1.3.0.html#map-addlayer
+myMap.addLayer(myLayers.geolandbasemap); //http://leafletjs.com/reference-1.3.0.html#map-addlayer
 
 let myMapControl = L.control.layers({ //http://leafletjs.com/reference-1.3.0.html#control-layers
     "Openstreetmap" : myLayers.osm,
@@ -48,7 +50,8 @@ let myMapControl = L.control.layers({ //http://leafletjs.com/reference-1.3.0.htm
     "basemap.at hidpi" : myLayers.bmaphidpi,
     "basemap.at Orthofoto" :  myLayers.bmaporthofoto30cm
 },{
-    "basemap.at Overlay": myLayers.bmapoverlay
+    "basemap.at Overlay": myLayers.bmapoverlay,
+    "Marker": markerGroup
 
 
 
@@ -69,14 +72,26 @@ L.control.scale({ //http://leafletjs.com/reference-1.3.0.html#control-scale
 const uni = [47.264, 11.385];
 const usi = [47.257, 11.356];
 const technik = [47.263, 11.343];
+const igls = [47.232025, 11.410990];
+const patscherkofel = [47.208611, 11.460556]
 const markerOptions = {
-    title: "Universität Innsbruck",
     draggable: true,
     opacity: 0.8
 }
 
-L.marker(uni,markerOptions).addTo(myMap);
-L.marker(usi, markerOptions).addTo(myMap);
-L.marker(technik, markerOptions).addTo(myMap);
+L.marker(uni,markerOptions).addTo(markerGroup);
+L.marker(usi, markerOptions).addTo(markerGroup);
+L.marker(technik, markerOptions).addTo(markerGroup);
+L.marker(igls, markerOptions).addTo(markerGroup);
+L.marker(patscherkofel, markerOptions).addTo(markerGroup).bindPopup("<p>Patscherkofel</p><img style ='width:200px'src ='https://upload.wikimedia.org/wikipedia/commons/2/2b/Luftbild_Patscherkofel.jpg', alt='Patscherkofel'/>").openPopup();
 
-myMap.setView(uni, 13);
+let lift = L.polyline([igls,patscherkofel],{
+    color: "red"
+});
+myMap.addLayer(lift)
+
+let uniPolygon = L.polygon([uni,usi,technik])
+myMap.addLayer(uniPolygon)
+
+myMap.fitBounds(markerGroup.getBounds());
+
