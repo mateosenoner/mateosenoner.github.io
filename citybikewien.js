@@ -46,19 +46,21 @@ var myIcon = L.icon({
 });
 
 async function addGeojson(url) {
-    console.log("Url wird geladen: ", url);
+    //console.log("Url wird geladen: ", url);
     const response = await fetch(url);
-    console.log("Response: ", response);
+    //console.log("Response: ", response);
     const citybikedata = await response.json();
-    console.log("Geojson: ", citybikedata);
+    //console.log("Geojson: ", citybikedata);
     const geojson = L.geoJSON(citybikedata, {
-        style: function(feature) {
-            return { color: "#ff0000"};
-        },
         pointToLayer: function(geoJsonPoint, latlng) {
             return L.marker(latlng, {icon: myIcon});
         }
-    });
+    }).bindPopup(function (layer) {
+		const props = layer.feature.properties;
+		    const popupText = `<h1>${props.STATION}</h1>
+		    <p>Bezirk: ${props.BEZIRK} </p>`;
+		    return popupText;
+		});
 
     citybikefeature.addLayer(geojson);
     myMap.fitBounds(citybikefeature.getBounds());

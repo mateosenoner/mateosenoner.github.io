@@ -52,13 +52,15 @@ async function addGeojson(url) {
     const sehenswuerdigkeitendata = await response.json();
     console.log("Geojson: ", sehenswuerdigkeitendata);
     const geojson = L.geoJSON(sehenswuerdigkeitendata, {
-        style: function(feature) {
-            return { color: "#ff0000"};
-        },
         pointToLayer: function(geoJsonPoint, latlng) {
             return L.marker(latlng, {icon: myIcon});
         }
-    });
+    }).bindPopup(function (layer) {
+		const props = layer.feature.properties;
+		    const popupText = `<h1>${props.NAME}</h1>
+		    <p>Adresse: ${props.ADRESSE} </p><a href=${props.WEITERE_INF}>Weitere Informationen`;
+		    return popupText;
+		});
     sehenswuerdigkeitenfeature.addLayer(geojson);
     myMap.fitBounds(sehenswuerdigkeitenfeature.getBounds());
 
