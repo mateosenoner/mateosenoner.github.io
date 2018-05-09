@@ -68,6 +68,11 @@ async function addGeojson(url) {
     myMap.fitBounds(citybikefeature.getBounds());
     const hash = new L.Hash(myMap);
 
+    myMap.addControl( new L.Control.Search({
+        layer: citybikefeature,
+        propertyName: 'STATION'
+    }) );
+
     //const markers = L.markerClusterGroup();
     //markers.addLayer(geojson);
     //myMap.addLayer(markers);
