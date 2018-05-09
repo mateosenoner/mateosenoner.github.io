@@ -1,5 +1,6 @@
 let myMap = L.map("mapdiv");
-const citybikefeature = L.featureGroup()
+const citybikefeature = L.markerClusterGroup()
+
 let myLayers = {
     geolandbasemap : L.tileLayer(
         "https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
@@ -60,11 +61,16 @@ async function addGeojson(url) {
 		    const popupText = `<h1>${props.STATION}</h1>
 		    <p>Bezirk: ${props.BEZIRK} </p>`;
 		    return popupText;
-		});
+        });
+        
 
     citybikefeature.addLayer(geojson);
     myMap.fitBounds(citybikefeature.getBounds());
+    const hash = new L.Hash(myMap);
 
+    //const markers = L.markerClusterGroup();
+    //markers.addLayer(geojson);
+    //myMap.addLayer(markers);
 }
 
 
