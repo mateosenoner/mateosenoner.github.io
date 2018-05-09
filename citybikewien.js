@@ -4,16 +4,16 @@ const citybikefeature = L.markerClusterGroup()
 let myLayers = {
     geolandbasemap : L.tileLayer(
         "https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
-            subdomains : ["maps","maps1","maps2","maps3","maps4"],
-            attribution : "Datenquelle: <a href= 'https://www.basemap.at'>Basemap.at</a>"
-        }
-    ),
-    bmapoverlay : L.tileLayer(
-        "https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png",{
-            subdomains : ["maps","maps1","maps2","maps3","maps4"],
-            attribution : "Datenquelle: <a href= 'https://www.basemap.at'>Basemap.at</a>"
-        }
-    ),
+        subdomains : ["maps","maps1","maps2","maps3","maps4"],
+        attribution : "Datenquelle: <a href= 'https://www.basemap.at'>Basemap.at</a>"
+    }
+),
+bmapoverlay : L.tileLayer(
+    "https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png",{
+    subdomains : ["maps","maps1","maps2","maps3","maps4"],
+    attribution : "Datenquelle: <a href= 'https://www.basemap.at'>Basemap.at</a>"
+}
+),
 
 };
 
@@ -25,9 +25,9 @@ let myMapControl = L.control.layers({
     "basemap.at Overlay": myLayers.bmapoverlay,
     "Citybike Standorte" : citybikefeature
     
-
-
-
+    
+    
+    
 },{
 	collapsed: false
 });
@@ -58,21 +58,21 @@ async function addGeojson(url) {
         }
     }).bindPopup(function (layer) {
 		const props = layer.feature.properties;
-		    const popupText = `<h1>${props.STATION}</h1>
-		    <p>Bezirk: ${props.BEZIRK} </p>`;
-		    return popupText;
-        });
-        
-
+        const popupText = `<h1>${props.STATION}</h1>
+        <p>Bezirk: ${props.BEZIRK} </p>`;
+        return popupText;
+    });
+    
+    
     citybikefeature.addLayer(geojson);
     myMap.fitBounds(citybikefeature.getBounds());
     const hash = new L.Hash(myMap);
-
+    
     myMap.addControl( new L.Control.Search({
         layer: citybikefeature,
         propertyName: 'STATION'
     }) );
-
+    
     //const markers = L.markerClusterGroup();
     //markers.addLayer(geojson);
     //myMap.addLayer(markers);
