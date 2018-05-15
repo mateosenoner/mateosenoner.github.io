@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bike Trail Tirol - Etappe Imst-Wenns</title><!-- TODO: Etappentitel einfügen -->
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../js/leaflet/leaflet.css" />
+    <script src="../js/leaflet/leaflet.js"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+	<script src="data/etappe27.geojson.js"></script>
+    <script defer src="biketirol.js"></script>
+
+</head>
+
+<body>
+    <div id="header">
+        <h2 class="white">Bike Trail Tirol</h2>
+        <h3 class="white">Griass enk die Wadeln!</h3>
+    </div>
+
+    <div class="author">
+        <img src="images/user.jpg" alt="Ihr Reiseleiter" /><!-- TODO: anpassen -->
+        <p class="gray">
+            <a href="mailto:mateo.senoner@uibk.ac.at">Mateo Senoner</a> -<!-- TODO: anpassen -->
+            <a href="https://mateosenoner.github.io/biketirol/index.html">Github Link</a><!-- TODO: anpassen -->
+        </p>
+    </div>
+
+    <hr />
+
+    
+    <div class="article">
+        <h1>Etappe 27 von Imst nach Wenns</h1><!-- TODO: anpassen -->
+
+        <p>Von Imst aus startet diese als schwer eingestufte Etappe und verbindet das Inntal mit dem Pitztal. Höhepunkt auf dieser Strecke – im wahrsten Sinne des Wortes wie auch in der Herausforderung – ist die knapp unter 2.000 Metern gelegene Venetalm, die Sie über eine steil ansteigende Schotterstraße erreichen. Dafür belohnt die Tour mit einem herrlichen Rundblick.</p>
+
+        
+        <div id="map"></div>
+
+        <h2>Streckenbeschreibung</h2>
+        <p>Kurz nach der Kirche biegt man in südwestlicher Richtung in eine Nebenstraße ab und radelt auf dieser ca. 400 Meter bis zur Abzweigung Brennbichl (bei Supermarkt). Nun geht es zum Inntalradweg (620) und auf diesem durch das Gewerbegebiet, später kurz auf der Straße über Inn und Autobahn nach Imst Au, von wo aus der Anstieg beginnt. Auf der asphaltierten Straße geht es durch Imsterberg. Von nun an folgt man immer den Wegweisern „Venetalm“ (604). Nach einigen Kehren im Wald erreicht man den lang gezogenen Bergrücken mit der herrlich gelegenen Venetalm (ca. 4 Stunden ab Imst). Von der Alm fährt man auf dem gleichen Weg etwa 200 Meter zurück und zweigt dann rechts Richtung Wenns (640) ab. In Folge hält man sich immer an den gelben Wegweisern nach Wenns (1 Stunde ab der Venetalm).</p>
+
+        <h3>Links</h3>
+        <ul>
+            <li><a href="https://www.tirol.at/reisefuehrer/sport/radfahren/biketouren/a-bike-trail-tirol-imst-venetalm-wenns">Link zum Trail</a></li>
+            <li><a href="http://www.imst.tirol.gv.at">Imst</a></li>
+			<li><a href="http://www.wenns.tirol.gv.at">Wenns</a></li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <!-- TODO: Links anpassen zu den benachbarten Etappen - siehe OLAT Tabelle ... -->
+    <div id="footer" class="gray">
+        <a class="back" href="../26/index.html">
+            <i class="fas fa-arrow-alt-circle-left"></i> vorhergehender Stop</a>
+        <a class="next" href="../28/index.html">nächster Stop
+            <i class="fas fa-arrow-alt-circle-right"></i>
+        </a>
+    </div>
+
+</body>
+</html>
