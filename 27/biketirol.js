@@ -1,5 +1,7 @@
 
-let myMap = L.map("map");
+let myMap = L.map("map",{
+    fullscreenControl: true,
+});
 let markerGroup = L.featureGroup();
 let routeGroup= L.featureGroup().addTo(myMap);
 myMap.addLayer(markerGroup);
@@ -71,7 +73,23 @@ L.control.scale({
 	imperial: false, 
 }).addTo(myMap); 
 
-let geojson = L.geoJSON(route).addTo(routeGroup);
+//let geojson = L.geoJSON(route).addTo(routeGroup);
+//myMap.fitBounds(routeGroup.getBounds());
 
+let gpxTrack = new L.GPX("data/etappe27.gpx", {
+      async : true,
+     }).addTo(routeGroup);
 
-myMap.fitBounds(routeGroup.getBounds());
+gpxTrack.on("loaded", function(evt) {
+    console.log("Name: "+evt.target.get_name())
+    console.log("Länge: "+evt.target.get_distance().toFixed(0))
+    console.log("Minimale Höhe: "+evt.target.get_elevation_min().toFixed(0))
+    console.log("Maximale Höhe: " +evt.target.get_elevation_max().toFixed(0))
+    console.log("Elevation Loss: " +evt.target.get_elevation_loss().toFixed(0))
+    console.log("Elevation gain: " +evt.target.get_elevation_gain().toFixed(0))
+    let laenge = evt.target.get_distance().toFixed(0)
+    document.getElementById("laenge").innerHTML=laenge;
+    
+    myMap.fitBounds(evt.target.getBounds());
+});
+
