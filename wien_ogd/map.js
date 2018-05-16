@@ -70,7 +70,7 @@ async function ladeGeojsonLayer(datenAttribute) {
     const response_json = await response.json();
 
     if (datenAttribute.icon){
-        console.log("geschafft")
+        //console.log("geschafft")
     }
 
     // GeoJSON Geometrien hinzufügen und auf Ausschnitt zoomen
