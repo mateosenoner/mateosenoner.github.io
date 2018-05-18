@@ -34,33 +34,57 @@ let myLayers = {
             attribution : "Datenquelle: <a href='https://www.kartetirol.at'>kartetirol.at</a>"
         }
 	),
+	nomenklatur: L.tileLayer(
+	        "http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.png8", {
+	            attribution: "Datenquelle: <a href='https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol'>eKarte Tirol</a>",
+	            pane: "overlayPane",
+	        }
+	    ),
 };
 
-myMap.addLayer(myLayers.geolandbasemap);
+// Layergruppen für die Elektronische Karte Tirol definieren
+const tirisSommer = L.layerGroup([
+    myLayers.sommer,
+    myLayers.nomenklatur
+]);
+const tirisWinter = L.layerGroup([
+    myLayers.winter,
+    myLayers.nomenklatur
+]);
+const tirisOrtho = L.layerGroup([
+    myLayers.ortho,
+    myLayers.nomenklatur
+]);
 
-let myMapControl = L.control.layers({
-    "Openstreetmap" : myLayers.osm,
-    "Basemap" : myLayers.geolandbasemap,
-	"Sommerkarte" : myLayers.sommer,
-	"Winterkarte" : myLayers.winter,   
-	"Orthofoto" : myLayers.ortho          
-},{  
-    "Start-Ziel" : markerGroup,
-	"Route" : routeGroup
+// Map control mit Grundkarten und GeoJSON Overlay definieren
+let kartenAuswahl = L.control.layers({
+    "Openstreetmap": myLayers.osm,
+    "basemap.at Grundkarte": myLayers.geolandbasemap,
+    "Elektronische Karte Tirol - Sommer" : tirisSommer,
+    "Elektronische Karte Tirol - Winter" : tirisWinter,
+    "Elektronische Karte Tirol - Orthophoto" : tirisOrtho,
+}, {
+    "GPS-Track": markerGroup,
+    "Start / Ziel": routeGroup,
 },{
-	collapsed: false 
+	collapsed : false
 });
 
-myMap.addControl(myMapControl); 
+myMap.addControl(kartenAuswahl);
+myMap.addLayer(tirisSommer);
 myMap.setView([47.224541,10.749633], 11); 
 
 
 var start = L.icon({
     iconUrl: 'start-race-2.png',
+ 	iconAnchor : [16,37],
+    popupAnchor : [0,-37],
 });
 
 var finish = L.icon({
     iconUrl: 'finish.png',
+ 	iconAnchor : [16,37],
+    popupAnchor : [0,-37],
 });
 
 L.marker([47.224541, 10.749633],{icon: start}).addTo(markerGroup).bindPopup("<p><strong>Start: Imst</strong></p><a href=https://de.wikipedia.org/wiki/Imst>Link zur Stadt</a>")
@@ -88,7 +112,15 @@ gpxTrack.on("loaded", function(evt) {
     console.log("Elevation Loss: " +evt.target.get_elevation_loss().toFixed(0))
     console.log("Elevation gain: " +evt.target.get_elevation_gain().toFixed(0))
     let laenge = evt.target.get_distance().toFixed(0)
+	let tiefsterPunkt = evt.target.get_elevation_min().toFixed(0)
+	let hoechsterPunkt = evt.target.get_elevation_max().toFixed(0)
+	let aufstieg = evt.target.get_elevation_gain().toFixed(0)
+	let abstieg = evt.target.get_elevation_loss().toFixed(0)
     document.getElementById("laenge").innerHTML=laenge;
+	document.getElementById("tiefsterPunkt").innerHTML=tiefsterPunkt;
+	document.getElementById("hoechsterPunkt").innerHTML=hoechsterPunkt;
+	document.getElementById("aufstieg").innerHTML=aufstieg;
+	document.getElementById("abstieg").innerHTML=abstieg;
     
     myMap.fitBounds(evt.target.getBounds());
 });
