@@ -2,9 +2,10 @@
 let myMap = L.map("map",{
     fullscreenControl: true,
 });
-let markerGroup = L.featureGroup();
+let markerGroup = L.featureGroup().addTo(myMap);
 let routeGroup= L.featureGroup().addTo(myMap);
-myMap.addLayer(markerGroup);
+let overlaySteigung= L.featureGroup().addTo(myMap)
+
 
 let myLayers = {
     osm : L.tileLayer(
@@ -64,8 +65,9 @@ let kartenAuswahl = L.control.layers({
     "Elektronische Karte Tirol - Winter" : tirisWinter,
     "Elektronische Karte Tirol - Orthophoto" : tirisOrtho,
 }, {
-    "GPS-Track": markerGroup,
-    "Start / Ziel": routeGroup,
+    //"GPS-Track": routeGroup,
+    "Start / Ziel": markerGroup,
+    "Steigungslinie" : overlaySteigung,
 },{
 	collapsed : false
 });
@@ -100,9 +102,19 @@ L.control.scale({
 //let geojson = L.geoJSON(route).addTo(routeGroup);
 //myMap.fitBounds(routeGroup.getBounds());
 
+//Höhenprofil-control
+let hoehenProfil = L.control.elevation({
+    position: "topright",
+    theme : "steelblue-theme",
+    collapsed : true,
+}).addTo(myMap)
+
+
+
+//gpx-Track
 let gpxTrack = new L.GPX("data/etappe27.gpx", {
       async : true,
-     }).addTo(routeGroup);
+     })//.addTo(routeGroup);
 
 gpxTrack.on("loaded", function(evt) {
     console.log("Name: "+evt.target.get_name())
@@ -125,3 +137,64 @@ gpxTrack.on("loaded", function(evt) {
     myMap.fitBounds(evt.target.getBounds());
 });
 
+gpxTrack.on("addline",function(evt){
+    hoehenProfil.addData(evt.line);
+    //console.log(evt.line);
+    //console.log(evt.line.getLatLngs());
+    //console.log(evt.line.getLatLngs()[0]);
+    //console.log(evt.line.getLatLngs()[0].lat);
+    //console.log(evt.line.getLatLngs()[0].lng);
+    //console.log(evt.line.getLatLngs()[0].meta);
+    //console.log(evt.line.getLatLngs()[0].meta.ele);
+
+    //alle Segmente der Steigungslinie hinzufügen
+    let gpxLinie = evt.line.getLatLngs();
+    for(let i=1; i < gpxLinie.length; i++){
+        let p1 = gpxLinie[i-1];
+        let p2 = gpxLinie[i];
+        //console.log(p1.lat,p1.lng,p2.lat,p2.lng)
+
+        //Entfernung zwischen den Punkten berechnen
+
+        let dist=myMap.distance(
+            [p1.lat,p1.lng],
+            [p2.lat,p2.lng]
+            );
+        
+        
+        //Höhenunterschied berechnen
+        let delta= p2.meta.ele - p1.meta.ele;
+        
+        //Steigung in Prozent berechnen
+        
+        let proz = (dist > 0) ? (delta/dist*100.0).toFixed(1) : 0;
+        //Bedingung ? Ausdruck1 : Ausdruck2
+        console.log(p1.lat,p1.lng,p2.lat,p2.lng, dist,delta,proz)
+        
+        //Linie zeichnen
+        //Farben:
+            //grün: http://colorbrewer2.org/#type=sequential&scheme=Greens&n=6
+            //rot: http://colorbrewer2.org/#type=sequential&scheme=Reds&n=6
+        let farbe = 
+            proz > 10  ? "#a50f15" :
+            proz > 6   ? "#de2d26" :
+            proz > 2   ? "#fb6a4a" :
+            proz > 0   ? "#a1d99b" :
+            proz > -2  ? "#74c476" :
+            proz > -6  ? "#c7e9c0" :
+            proz > -10 ? "#31a354" :
+                     "#006d2c";
+        
+                     let segment = L.polyline(
+           [
+                [p1.lat,p1.lng],
+                [p2.lat,p2.lng]
+           ],{
+                 color: farbe,
+                 weight : 6,
+                 
+            }
+        ).addTo(overlaySteigung);
+    
+    }
+});
